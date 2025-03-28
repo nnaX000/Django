@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+</head>
+<body>
+
+<h1>나영의 홈페이지에 오신 것을 환영합니다!</h1>
+
+{% if user.is_authenticated %}
+  <!-- 로그인된 상태에서는 유저의 이름과 로그아웃 버튼을 띄운다-->
+  <p>안녕하세요, {{ user.username }}님!</p>
+  <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button type="submit">로그아웃</button>
+  </form>
+{% else %}
+  <!-- 로그인되지 않은 상태에서는 회원가입과 로그인 버튼을 띄운다 -->
+  <a href="{% url 'signup' %}">회원가입</a> |
+  <a href="{% url 'login' %}">로그인</a>
+{% endif %}
+
+</body>
+</html>
