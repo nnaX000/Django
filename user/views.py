@@ -2,13 +2,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate,login
 from django.contrib import messages
 from .forms import SignUpForm, LoginForm
+from .models import CustomUser
 
 #회원가입 기능
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        user_id = request.POST.get('id')
         if form.is_valid():
-            user = form.save()
+            form.save()
+            #비밀번호 찾기시에 암호화된 비밀번호가 아닌 실제 비번을 불러와야하기 때문에 따로 필드에 저장시켜줌
+            user= CustomUser.objects.get(id=user_id)
+            user.raw_password=request.POST.get('password1')
+            user.save()
             return redirect('signup') 
     else:
         form = SignUpForm()
@@ -39,6 +45,25 @@ def login_view(request):
                 messages.error(request, '해당하는 유저가 없습니다!')
 
     return render(request, 'login.html', {'form': form})
+
+
+#비밀번호 찾기 기능(아이디를 입력하면 그에 해당하는 유저의 비밀번호를 반환해주는 형식)
+def password_search(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('id')  # 폼에서 입력한 id 값을 user_id 변수에 저장
+        found_password=""
+
+        try:
+            # CustomUser 테이블에 해당 ID가 있는지 확인
+            exist_user = CustomUser.objects.get(id=user_id)
+            #해당 유저의 비밀번호를 불러옴
+            found_password=exist_user.raw_password
+        except CustomUser.DoesNotExist:
+            messages.error(request, '해당 아이디를 가진 유저가 없습니다.')
+    
+        return render(request, 'password.html', {'found_password' :found_password})
+        
+    return render(request,'password.html')
 
 
 

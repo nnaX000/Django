@@ -11,3 +11,5 @@ def home_view(request):
 def logout_view(request):
     logout(request)
     return render(request,'home.html')
+
+
