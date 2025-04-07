@@ -16,7 +16,7 @@ class Post(models.Model):
     stacks = models.ManyToManyField(Stack, related_name="posts")
     github=models.CharField(max_length=100,blank=True, null=True)
     view = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_posts', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -24,3 +24,16 @@ class Post(models.Model):
 class PostImage(models.Model):
     post = models.ForeignKey(Post, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='post_images/')
+
+#댓글&대댓글 테이블
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_comments', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def is_reply(self):
+        return self.parent is not None
