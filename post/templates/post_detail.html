@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ post.title }}</title>
+</head>
+<body>
+  <h1>{{ post.title }}</h1>
+  <p><strong>작성자:</strong> {{ post.author.username }}</p>
+  <p><strong>내용:</strong> {{ post.content }}</p>
+  <p><strong>GitHub:</strong> <a href="{{ post.github }}">{{ post.github }}</a></p>
+  <p><strong>스택:</strong>
+    {% for stack in post.stacks.all %}
+      {{ stack.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+
+  <h3>이미지:</h3>
+  {% for img in images %}
+    <img src="{{ img.image.url }}" alt="이미지" width="300"><br>
+  {% endfor %}
+
+  <p><strong>조회수:</strong> {{ post.view }} / <strong>좋아요:</strong> {{ post.likes }}</p>
+  <p><small>작성일: {{ post.created_at|date:"Y-m-d H:i" }}</small></p>
+</body>
+</html>

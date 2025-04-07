@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>글쓰기</title>
+</head>
+<body>
+  <h1>글 작성</h1>
+  
+  <form method="post" action="{% url 'post_create' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="title">제목:</label><br>
+    <input type="text" id="title" name="title"><br><br>
+
+    <label for="content">내용:</label><br>
+    <textarea id="content" name="content" rows="6" cols="40"></textarea><br><br>
+
+    <label for="stacks">기술 스택 (Ctrl+클릭으로 다중 선택):</label><br>
+    <select id="stacks" name="stacks[]" multiple>
+      {% for stack in stacks %}
+        <option value="{{ stack.id }}">{{ stack.name }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <label for="images">이미지 업로드 :</label><br>
+    <input type="file" id="images" name="images[]" multiple><br><br>
+
+    <label for="github">GitHub 링크:</label><br>
+    <input type="url" id="github" name="github"><br><br>
+
+    <button type="submit">작성 완료</button>
+  </form>
+</body>
+</html>
