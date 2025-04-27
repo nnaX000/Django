@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>게시판</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      padding: 40px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>게시물 목록</h2>
+
+  <div>
+    <a href="?sort=recent" {% if sort == 'recent' %}style="font-weight:bold;"{% endif %}>최신순</a> |
+    <a href="?sort=likes" {% if sort == 'likes' %}style="font-weight:bold;"{% endif %}>인기순</a>
+  </div>
+
+  <ul>
+    {% for post in results %}
+      <li>
+        <a href="{% url 'post_detail' post.id %}">
+          {{ post.title }}
+        </a>
+        <div>작성자: {{ post.author.username }} | 작성일: {{ post.created_at|date:"Y-m-d H:i" }}</div>
+      </li>
+    {% empty %}
+      <li>게시물이 없습니다.</li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>

@@ -8,6 +8,7 @@ urlpatterns = [
     path('comment/<int:comment_id>/like/', comment_like_view, name='comment_like'),
     path('comment/<int:comment_id>/reply/', comment_reply_view, name='comment_reply'),
     path('post/<int:post_id>/like/', post_like_view, name='post_like'),
-    path('search/',post_search_view,name='post_search')
+    path('search/',post_search_view,name='post_search'),
+    path('board/', post_board_view, name='post_board')
 ]
 

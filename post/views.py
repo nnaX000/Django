@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Stack, PostImage, Comment
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 #글 작성하기
 def post_create_view(request):
@@ -110,3 +111,14 @@ def post_search_view(request):
     else:
          return render(request,'post_search.html')
     
+#게시물 보드(게시물 전체 다 보기+인기순/최신순 정렬)
+@login_required
+def post_board_view(request):
+    sort=request.GET.get('sort','recent')
+
+    if sort == 'likes':
+        results = Post.objects.annotate(likes_count=Count('likes')).order_by('-likes_count')
+    else:
+        results = Post.objects.all().order_by('-created_at')
+
+    return render(request,'post_board.html',{'results':results})
