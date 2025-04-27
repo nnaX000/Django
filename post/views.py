@@ -35,6 +35,8 @@ def post_create_view(request):
 #이미 작성한 글 보기
 def post_detail_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    post.view+=1
+    post.save()
     images = post.images.all()
     return render(request, 'post_detail.html', {'post': post, 'images': images})
 
