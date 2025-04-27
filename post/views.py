@@ -16,7 +16,6 @@ def post_create_view(request):
               github=github,
               author=author,
               view=1,
-              likes=0
          )
 
          stack_ids = request.POST.getlist('stacks[]')
@@ -98,3 +97,16 @@ def post_like_view(request, post_id):
         post.likes.add(user)
 
     return redirect('post_detail', post_id=post.id)
+
+
+#게시물 찾기
+@login_required
+def post_search_view(request):
+    query = request.GET.get('input')
+
+    if query :
+        result=Post.objects.filter(title__icontains=query)
+        return render(request,'post_search_result.html',{'results': result, 'query' : query})
+    else:
+         return render(request,'post_search.html')
+    
