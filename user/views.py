@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate,login
 from django.contrib import messages
 from .forms import SignUpForm, LoginForm
 from .models import CustomUser
+from post.models import Post
+from django.contrib.auth.decorators import login_required
 
 #회원가입 기능
 def signup_view(request):
@@ -66,5 +68,24 @@ def password_search(request):
     return render(request,'password.html')
 
 
+@login_required
+def mypage_view(request):
+    user = request.user
+    posts = Post.objects.filter(author=user)
+    return render(request, 'mypage.html', {
+        'user': user,
+        'posts': posts
+    })
+
+@login_required
+def edit_profile_view(request):
+    if request.method == 'POST':
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('mypage')
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    return render(request, 'edit_profile.html', {'form': form})
 
 

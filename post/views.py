@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Stack, PostImage, Comment
 from django.contrib.auth.decorators import login_required
+from .forms import PostForm
 from django.db.models import Count
 
 #글 작성하기
@@ -124,3 +125,25 @@ def post_board_view(request):
         results = Post.objects.all().order_by('-created_at')
 
     return render(request,'post_board.html',{'results':results})
+
+
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, author=request.user)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('mypage') 
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'edit_post.html', {'form': form, 'post': post})
+
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id, author=request.user)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('mypage')
+    return render(request, 'delete_post.html', {'post': post})

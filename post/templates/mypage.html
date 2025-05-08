@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+</head>
+<body>
+    <h2>마이페이지</h2>
+
+    <div>
+        <p><strong>아이디:</strong> {{ user.id }}</p>
+        <p><strong>닉네임:</strong> {{ user.username }}</p>
+        <p><strong>전화번호:</strong> {{ user.phone_number }}</p>
+        <p><strong>이메일:</strong> {{ user.email }}</p>
+        <a href="{% url 'edit_profile' %}">회원 정보 수정</a>
+    </div>
+
+    <hr>
+
+    <h3>내 게시물</h3>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <strong>{{ post.title }}</strong> - {{ post.created_at|date:"Y-m-d H:i" }}
+                <br>
+                <a href="{% url 'edit_post' post.id %}">수정</a> |
+                <a href="{% url 'delete_post' post.id %}">삭제</a>
+            </li>
+        {% empty %}
+            <li>작성한 게시물이 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
