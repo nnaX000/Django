@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     'user',
     'home',
-    'post'
+    'post',
+    'guestbook',
 ]
 
 MIDDLEWARE = [

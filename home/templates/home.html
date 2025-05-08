@@ -18,6 +18,7 @@
       <a href="{% url 'post_create' %}">글 쓰러 가기</a>
       <a href="{% url 'post_search' %}">글 검색하기</a>
       <a href="{% url 'post_board' %}">글 전체보기</a>
+      <a href="{% url 'guestbook_write' user.id %}">✏ 방명록 쓰기</a>
   </form>
 {% else %}
   <!-- 로그인되지 않은 상태에서는 회원가입과 로그인 버튼을 띄운다 -->

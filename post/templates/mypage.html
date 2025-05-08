@@ -30,5 +30,20 @@
             <li>작성한 게시물이 없습니다.</li>
         {% endfor %}
     </ul>
+
+    <hr>
+
+    <h3>내 방명록</h3>
+    <ul>
+        {% for entry in guestbooks %}
+            <li>
+                <strong>{{ entry.writer.username }}</strong>: {{ entry.content }}
+                <br>
+                <small>{{ entry.created_at|date:"Y-m-d H:i" }}</small>
+            </li>
+        {% empty %}
+            <li>방명록이 없습니다.</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

@@ -5,6 +5,7 @@ from .forms import SignUpForm, LoginForm
 from .models import CustomUser
 from post.models import Post
 from django.contrib.auth.decorators import login_required
+from guestbook.models import GuestBookEntry
 
 #회원가입 기능
 def signup_view(request):
@@ -72,9 +73,11 @@ def password_search(request):
 def mypage_view(request):
     user = request.user
     posts = Post.objects.filter(author=user)
+    guestbooks = user.guestbook_entries.all()
     return render(request, 'mypage.html', {
         'user': user,
-        'posts': posts
+        'posts': posts,
+        'guestbooks': guestbooks,
     })
 
 @login_required

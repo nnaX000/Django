@@ -22,6 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('user/', include('user.urls')),  # users 앱 URL 연결
     path('post/', include('post.urls')),  # post 앱 URL 연결
+    path('guestbook/', include('guestbook.urls')),
     path('', include('home.urls')),
     path('admin/', admin.site.urls),
 ]
